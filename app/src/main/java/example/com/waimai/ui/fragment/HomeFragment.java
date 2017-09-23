@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import example.com.waimai.R;
+import example.com.waimai.presenter.HomePresenter;
 import example.com.waimai.ui.adapter.HomeRecyclerViewAdapter;
 
 /**
@@ -37,9 +38,13 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        //首页的数据适配器
         HomeRecyclerViewAdapter homeRecyclerViewAdapter = new HomeRecyclerViewAdapter();
         mRvHome.setAdapter(homeRecyclerViewAdapter);
         mRvHome.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        //网络请求
+        HomePresenter homePresenter = new HomePresenter(homeRecyclerViewAdapter);
+        homePresenter.getHomeData("","");
         super.onViewCreated(view, savedInstanceState);
     }
 
