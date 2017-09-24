@@ -39,7 +39,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //首页的数据适配器
-        HomeRecyclerViewAdapter homeRecyclerViewAdapter = new HomeRecyclerViewAdapter();
+        HomeRecyclerViewAdapter homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(getContext());
         mRvHome.setAdapter(homeRecyclerViewAdapter);
         mRvHome.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
         //网络请求
