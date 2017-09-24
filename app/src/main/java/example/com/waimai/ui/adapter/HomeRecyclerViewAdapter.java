@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import example.com.waimai.R;
 import example.com.waimai.presenter.net.bean.HomeInfo;
+import example.com.waimai.presenter.net.bean.HomeItem;
 import example.com.waimai.presenter.net.bean.Promotion;
 
 /**
@@ -59,11 +60,28 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //给holder中的所有的控件绑定数据
-        if (position == 0){
+        if (position == 0) {
             //头
-        }else if(data.getBody().get(position-1).type == 0){
+        } else if (data.getBody().get(position - 1).type == 0) {
             //一般条目，指定商家
+            setSellerData(holder, data.getBody().get(position - 1));
+        }else {
+            setDivData(holder,data.getBody().get(position - 1));
         }
+    }
+
+    private void setDivData(RecyclerView.ViewHolder holder, HomeItem homeItem) {
+        ((DivisionViewHolder)holder).tv1.setText(homeItem.recommendInfos.get(0));
+        ((DivisionViewHolder)holder).tv2.setText(homeItem.recommendInfos.get(1));
+        ((DivisionViewHolder)holder).tv3.setText(homeItem.recommendInfos.get(2));
+        ((DivisionViewHolder)holder).tv4.setText(homeItem.recommendInfos.get(3));
+        ((DivisionViewHolder)holder).tv5.setText(homeItem.recommendInfos.get(4));
+        ((DivisionViewHolder)holder).tv6.setText(homeItem.recommendInfos.get(5));
+    }
+
+    private void setSellerData(RecyclerView.ViewHolder holder, HomeItem homeItem) {
+        //设置商家的名称
+        ((SellerViewHolder) holder).tvTitle.setText(homeItem.seller.getName());
     }
 
     @Override
@@ -123,24 +141,20 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private class SellerViewHolder extends RecyclerView.ViewHolder {
-
-        @InjectView(R.id.slider)
-        SliderLayout slider;
+    public class SellerViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.tvCount)
         TextView tvCount;
         @InjectView(R.id.tv_title)
         TextView tvTitle;
         @InjectView(R.id.ratingBar)
         RatingBar ratingBar;
-
         public SellerViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.inject(this,itemView);
         }
     }
 
-    private class DivisionViewHolder extends RecyclerView.ViewHolder {
+    public class DivisionViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.tv_division_title)
         TextView tvDivisionTitle;
         @InjectView(R.id.tv1)
@@ -155,9 +169,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter {
         TextView tv5;
         @InjectView(R.id.tv6)
         TextView tv6;
+
         public DivisionViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this,itemView);
+            ButterKnife.inject(this, itemView);
         }
     }
 }
