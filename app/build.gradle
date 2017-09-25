@@ -36,4 +36,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.2'	// picasso异步加载图片
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar' //包含轮播图自动轮训的自定义控件
+
+    compile 'com.flipboard:bottomsheet-commons:1.5.1'
+    compile 'com.flipboard:bottomsheet-core:1.5.1'
 }

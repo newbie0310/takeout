@@ -1,6 +1,7 @@
 package example.com.waimai.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import example.com.waimai.R;
 import example.com.waimai.presenter.net.bean.HomeInfo;
 import example.com.waimai.presenter.net.bean.HomeItem;
 import example.com.waimai.presenter.net.bean.Promotion;
+import example.com.waimai.presenter.net.bean.Seller;
+import example.com.waimai.ui.activity.BusinessActivity;
 
 /**
  * Created by john1 on 2017/9/21.
@@ -36,7 +39,6 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter {
     public static final int ITEM_SELER = 1;
     public static final int ITEM_DIV = 2;
     private HomeInfo data;
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM_HEAD) {
@@ -65,6 +67,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter {
         } else if (data.getBody().get(position - 1).type == 0) {
             //一般条目，指定商家
             setSellerData(holder, data.getBody().get(position - 1));
+            ((SellerViewHolder)holder).setPosition(position - 1);
         }else {
             setDivData(holder,data.getBody().get(position - 1));
         }
@@ -103,8 +106,6 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter {
     /**
      * 通过索引获取服务器返回的type值,判断条目类型的状态码
      *
-     * @param position
-     * @return
      */
     @Override
     public int getItemViewType(int position) {
@@ -148,9 +149,27 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter {
         TextView tvTitle;
         @InjectView(R.id.ratingBar)
         RatingBar ratingBar;
+        int position;
+
         public SellerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.inject(this,itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //区分点的是那个条目,将没一个条目的做索引值
+                    Intent intent = new Intent(mContext,BusinessActivity.class);
+                    //需要传递对象所在的类，需要实现序列化接口
+                    Seller seller =  data.getBody().get(position).getSeller();
+                    intent.putExtra("seller",seller);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
+        public void setPosition(int position) {
+            //传递进来的position已经是减过一的索引值，直接用此索引获取集合中的数据
+            this.position = position;
         }
     }
 
