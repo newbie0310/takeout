@@ -5,6 +5,6 @@ package example.com.waimai.utils;
  */
 
 public class Constant {
-    public static final String BASEURL = "http://192.168.3.35:8080/TakeoutServiceVersion2/";
+    public static final String BASEURL = "http://192.168.2.131:8080/TakeoutServiceVersion2/";
     public static final String HOME_URL = "home";
 }

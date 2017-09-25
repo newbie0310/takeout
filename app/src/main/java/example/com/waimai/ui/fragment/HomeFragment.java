@@ -1,5 +1,6 @@
 package example.com.waimai.ui.fragment;
 
+import android.animation.ArgbEvaluator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,6 +28,15 @@ public class HomeFragment extends BaseFragment {
     private TextView mHomeTvAddress;
     private LinearLayout mLlTitleSearch;
     private LinearLayout mLlTitleContainer;
+    private int sumY;
+    private float duration = 300.0f;
+    private ArgbEvaluator argbEvaluator = new ArgbEvaluator();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        sumY = 0;
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -42,6 +52,35 @@ public class HomeFragment extends BaseFragment {
         HomeRecyclerViewAdapter homeRecyclerViewAdapter = new HomeRecyclerViewAdapter(getContext());
         mRvHome.setAdapter(homeRecyclerViewAdapter);
         mRvHome.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+
+        mRvHome.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                //滚动状态发生改变的时候调用
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                //滚动的时候调用
+                //累加dy的结果，计算一共滚动了多少像素，决定顶部title的背景颜色
+                sumY += dy;
+                int bgColor = 0X553190E8;
+                if (sumY <= 0){
+                    //没有移动
+                    bgColor = 0X553190E8;
+                }else if (sumY >= 300){
+                    //移动到了颜色渐变最大值
+                    bgColor = 0XFF3190E8;
+                }else {
+                    //移动过程中颜色的渐变
+                    bgColor = (int) argbEvaluator.evaluate(sumY/duration,0X553190E8,0XFF3190E8);
+                }
+                mLlTitleContainer.setBackgroundColor(bgColor);
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         //网络请求
         HomePresenter homePresenter = new HomePresenter(homeRecyclerViewAdapter);
         homePresenter.getHomeData("","");

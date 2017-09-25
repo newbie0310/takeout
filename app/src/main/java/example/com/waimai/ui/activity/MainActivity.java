@@ -19,7 +19,7 @@ import example.com.waimai.ui.fragment.MoreFragment;
 import example.com.waimai.ui.fragment.OrderFragment;
 import example.com.waimai.ui.fragment.UserFragment;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @InjectView(R.id.main_fragment_container)
     FrameLayout mainFragmentContainer;
